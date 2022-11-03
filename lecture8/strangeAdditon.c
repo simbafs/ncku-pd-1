@@ -30,9 +30,10 @@ void print_int_bit(uint32_t n) {
 int main(void) {
 	float a, b;
 	scanf("%f %f", &a, &b);
-	uint32_t fa, fb;
+	uint32_t fa, fb, fc;
 	fa = float2int(a);
 	fb = float2int(b);
+	fc = fa + fb;
 
 	printf("   ");
 	print_int_bit(fa);
@@ -43,5 +44,11 @@ int main(void) {
 	printf("\n");
 
 	printf("---------------------------------------\n");
+
+	printf("   ");
+	print_int_bit(fc);
+	printf("\n");
+	
+	printf("%d + %d = %d\n", (int)a, (int)b, fc);
 	
 }
