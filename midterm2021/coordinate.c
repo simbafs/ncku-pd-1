@@ -64,21 +64,20 @@ int sumOfHex(Hex *h) {
 }
 
 int getCoordinate(Hex *h, Hex *coordinate) {
-	//  printf("> %s %d\n", h->str, h->len);
-	if (h->len <= 1) {
-		strcpy(coordinate->str, h->str);
-		coordinate->len = h->len;
+	printf("> %s %d\n", h->str, h->len);
+	if (h->len <= 2) {
+		*coordinate = *h;
 		return 0;
 	}
 
 	Hex e, o, ec, oc;  // even, odd
 	split(h, &e, &o);
-	//  printf(">> %s %d split %s %d; %s %d\n", h->str, h->len, e.str, e.len, o.str,
-	//         o.len);
+	printf(">> %s %d split %s %d; %s %d\n", h->str, h->len, e.str, e.len, o.str,
+		   o.len);
 	//  return 0;
 	sumOfHex(&e);
 	sumOfHex(&o);
-	//  printf(">> sum %s %d %s %d\n", e.str, e.len, o.str, o.len);
+	printf(">> sum %s %d %s %d\n", e.str, e.len, o.str, o.len);
 	//  return 0;
 	getCoordinate(&e, &ec);
 	getCoordinate(&o, &oc);
