@@ -26,21 +26,24 @@ int nextWordLen(char *str) {
 	return i;
 }
 
+#define W_INVALID 0
+#define W_ALPHABAT 1
+#define W_PUNTUATION 2
 // invalid -> 0
 // a-zA-Z -> 1;
 // .,!? -> 2;
-int wordType(char c) {
-	if ('a' <= c && c <= 'z') return 1;
-	if ('A' <= c && c <= 'Z') return 1;
-	if (c == '.' || c == ',' || c == '!' || c == '?') return 2;
-	return 0;
+int characterType(char c) {
+	if ('a' <= c && c <= 'z') return W_ALPHABAT;
+	if ('A' <= c && c <= 'Z') return W_ALPHABAT;
+	if (c == '.' || c == ',' || c == '!' || c == '?') return W_PUNTUATION;
+	return W_INVALID;
 }
 
 void recovery(char *homework) {
 	char *read = homework;
 	char *write = homework;
 
-	for (; *read != '\0';) {
+	while (*read != '\0') {
 		int len = nextWordLen(read);
 
 		int flag = 1;
@@ -48,14 +51,18 @@ void recovery(char *homework) {
 			flag = 0;
 		} else {
 			for (int i = 0; i < len; i++) {
-				//  if(wordType(read[i]) == 2){
+				//  if(characterType(read[i]) == 2){
 				//      printf("> %c i = %d, len = %d\n", read[i], i, len);
 				//  }
-				if (!wordType(read[i]) ||
-					(wordType(read[i]) == 2 && i != len - 1)) {
+				if (!characterType(read[i]) ||	// invalid character
+					(characterType(read[i]) == W_PUNTUATION &&
+					 i != len - 1)) {  // the last is puntuation
 					flag = 0;
 					break;
 				}
+			}
+			if (characterType(read[0] == W_PUNTUATION)) {
+				flag = 0;
 			}
 		}
 
@@ -71,7 +78,7 @@ void recovery(char *homework) {
 		//  printf("i = %ld, len = %d, flag = %d\n", read - homework, len,
 		//  flag);
 
-		// jump to next word
+		// jump to next character
 		read += len + 1;
 	}
 	*write = '\0';
