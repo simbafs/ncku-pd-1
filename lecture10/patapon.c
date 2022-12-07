@@ -20,39 +20,48 @@ int main() {
 	char cmdstr[100] = {};
 	int cmdstrIndex = 0;
 	char c = 0;
-	int i = 1;
+	int totalCmd = 0;
+	int validCmd = 0;
 	do {
 		c = getchar();
 		if (c == ',' || c == '.' || c == '\n') {
 			cmdstr[cmdstrIndex++] = '\0';
 			unsigned int movement = parseCmd(cmdstr);
-			if (movement != 0x00) {
-				switch (movement) {
-					case move_forward:
-						//  printf("move_forward\n");
-						distance--;
-						break;
-					case attack:
-						//  printf("attack\n");
-						if (distance <= 3) {
-							hp--;
-						}
-						break;
-					case withstand:
-						//  printf("withstand\n");
-						distance++;
-						break;
-				}
+			switch (movement) {
+				case move_forward:
+					//  printf("move_forward\n");
+					distance--;
 
-				if (hp <= 0) {
-					printf("YES %d\n", i);
-					return 0;
-				}
-				if (distance <= 0 || (i % 10 == 0 && movement != withstand)) {
-					printf("NO %d\n", hp);
-					return 0;
-				}
-				i++;
+					validCmd++;
+					totalCmd++;
+					break;
+				case attack:
+					//  printf("attack\n");
+					if (distance <= 3) {
+						hp--;
+					}
+
+					validCmd++;
+					totalCmd++;
+					break;
+				case withstand:
+					//  printf("withstand\n");
+					distance++;
+
+					validCmd++;
+					totalCmd++;
+					break;
+				case 0x00:
+					totalCmd++;
+			}
+
+			if (hp <= 0) {
+				printf("YES %d\n", validCmd);
+				return 0;
+			}
+			if (distance <= 0 || (totalCmd % 10 == 0 && movement != withstand)) {
+				printf("NO %d\n", hp);
+				return 0;
 			}
 			cmdstrIndex = 0;
 		} else {
